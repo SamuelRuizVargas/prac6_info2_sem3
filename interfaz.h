@@ -2,6 +2,9 @@
 #define INTERFAZ_H
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <QSlider>
+
+#include "planeta.h"
 
 using namespace std;
 
@@ -17,8 +20,12 @@ public:
     interfaz(QWidget *parent = nullptr);
     ~interfaz();
 
+public slots:
+    void zoom();
+
 private:
     Ui::interfaz *ui;
     QGraphicsScene *scene;
+    planeta *sol;
 };
 #endif // INTERFAZ_H
