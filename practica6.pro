@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    interfaz.cpp
+    interfaz.cpp \
+    planeta.cpp
 
 HEADERS += \
-    interfaz.h
+    interfaz.h \
+    planeta.h
 
 FORMS += \
     interfaz.ui
