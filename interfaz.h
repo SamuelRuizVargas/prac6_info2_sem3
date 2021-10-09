@@ -8,6 +8,8 @@
 
 using namespace std;
 
+#define PATH_PLANETS "../practica6/textos/planetas.txt"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class interfaz; }
 QT_END_NAMESPACE

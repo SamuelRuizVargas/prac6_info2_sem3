@@ -11,14 +11,17 @@ interfaz::interfaz(QWidget *parent)
     scene = new QGraphicsScene;
 
     //Incio de la escena
-    scene->setSceneRect(0,0,741,551);
+    scene->setSceneRect(-370,-255,741,551);
 
     ui->verticalSlider->setTickPosition(QSlider::TicksBothSides);
     connect(ui->verticalSlider,SIGNAL(valueChanged(int)),this,SLOT(zoom()));
 
     //sol de prueba
-    sol = new planeta(370,255);
+    sol = new planeta(0,0,0,0,70000,300,"sol");
     scene->addItem(sol);
+
+    //Cuadrar escalamiento de scene
+    ui->graphicsView->scale(0.1,0.1);
 
     //mostrar escena
     ui->graphicsView->setScene(scene);
