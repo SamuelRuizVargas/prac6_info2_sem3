@@ -2,6 +2,7 @@
 #define INTERFAZ_H
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <fstream>
 #include <QSlider>
 
 #include "planeta.h"
@@ -29,5 +30,9 @@ private:
     Ui::interfaz *ui;
     QGraphicsScene *scene;
     planeta *sol;
+
+    QList<planeta*> cuerpos;
+
+    void dibujarPlanetas(string=PATH_PLANETS);
 };
 #endif // INTERFAZ_H
