@@ -11,7 +11,7 @@ interfaz::interfaz(QWidget *parent)
     scene = new QGraphicsScene;
 
     //Incio de la escena
-    scene->setSceneRect(-370,-255,741,551);
+    scene->setSceneRect(-370,-275,741,551);
 
     ui->verticalSlider->setTickPosition(QSlider::TicksBothSides);
     connect(ui->verticalSlider,SIGNAL(valueChanged(int)),this,SLOT(zoom()));
@@ -20,7 +20,12 @@ interfaz::interfaz(QWidget *parent)
     dibujarPlanetas();
 
     //Cuadrar escalamiento de scene
-    ui->graphicsView->scale(0.1,0.1);
+    ui->graphicsView->scale(0.095,0.095);
+
+    //timer
+    timer=new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(moverObjeto()));
+    timer->start(0.00001);
 
     //mostrar escena
     ui->graphicsView->setScene(scene);
@@ -50,11 +55,29 @@ void interfaz::zoom()
     }
 }
 
+void interfaz::moverObjeto()
+{
+    //utilizar las variables necesarias para mover el objeto
+    QList<planeta*>::iterator it;
+
+    float posicion_x, posicion_y,contador=1,masa_s=cuerpos[0]->getMasa();
+    for(it=cuerpos.begin()+1;it!=cuerpos.end();it++)
+    {
+        cuerpos[contador]->a_restart();
+        cuerpos[contador]->acelera(masa_s);
+        cuerpos[contador]->posicion_actu(1);
+        posicion_x=cuerpos[contador]->getPX();
+        posicion_y=cuerpos[contador]->getPY();
+        cuerpos[contador]->setPos(posicion_x,posicion_y);
+        contador++;
+    }
+}
+
 void interfaz::dibujarPlanetas(string ruta)
 {
     ifstream archivo;
     string coorde,planeta_actu,numero,int1,int2,int3,int4,int5,int6;
-    int len,len2,ente1,ente2,ente3,ente4,ente5,ente6,conta;
+    float len,len2,ente1,ente2,ente3,ente4,ente5,ente6,conta;
     char caracter;
     archivo.open(ruta, ios::in);
     while(!archivo.eof())
@@ -102,12 +125,12 @@ void interfaz::dibujarPlanetas(string ruta)
                 numero.erase();
             }
         }
-        ente1=atoi(int1.c_str());
-        ente2=atoi(int2.c_str());
-        ente3=atoi(int3.c_str());
-        ente4=atoi(int4.c_str());
-        ente5=atoi(int5.c_str());
-        ente6=atoi(int6.c_str());
+        ente1=atof(int1.c_str());
+        ente2=atof(int2.c_str());
+        ente3=atof(int3.c_str());
+        ente4=atof(int4.c_str());
+        ente5=atof(int5.c_str());
+        ente6=atof(int6.c_str());
         int1.erase();
         int2.erase();
         int3.erase();

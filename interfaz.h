@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <fstream>
 #include <QSlider>
+#include <QTimer>
 
 #include "planeta.h"
 
@@ -25,11 +26,13 @@ public:
 
 public slots:
     void zoom();
+    void moverObjeto();
 
 private:
     Ui::interfaz *ui;
     QGraphicsScene *scene;
-    planeta *sol;
+
+    QTimer *timer;
 
     QList<planeta*> cuerpos;
 
