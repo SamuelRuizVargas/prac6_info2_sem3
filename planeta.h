@@ -39,7 +39,6 @@ class planeta : public QGraphicsItem
     float masa;
     float radio;
 
-//    float G=0.0000000000667384;
     float G=1;
 
     bool sol=false;
