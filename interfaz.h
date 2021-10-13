@@ -37,5 +37,7 @@ private:
     QList<planeta*> cuerpos;
 
     void dibujarPlanetas(string=PATH_PLANETS);
+    void limpiartxt();
+    void actualizartxt();
 };
 #endif // INTERFAZ_H

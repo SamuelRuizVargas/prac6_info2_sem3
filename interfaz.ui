@@ -10,6 +10,18 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Simulador</string>
   </property>
@@ -52,7 +64,7 @@
      <number>1</number>
     </property>
     <property name="value">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="tracking">
      <bool>true</bool>
@@ -107,6 +119,9 @@
     </property>
     <property name="text">
      <string>NORMAL</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButton_slow">

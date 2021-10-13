@@ -1,6 +1,8 @@
 #include "interfaz.h"
 #include "ui_interfaz.h"
 
+int value_ant=0;
+
 interfaz::interfaz(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::interfaz)
@@ -13,6 +15,7 @@ interfaz::interfaz(QWidget *parent)
     //Incio de la escena
     scene->setSceneRect(-370,-275,741,551);
 
+    //configuracion vertical slider
     ui->verticalSlider->setTickPosition(QSlider::TicksBothSides);
     connect(ui->verticalSlider,SIGNAL(valueChanged(int)),this,SLOT(zoom()));
 
@@ -25,7 +28,10 @@ interfaz::interfaz(QWidget *parent)
     //timer
     timer=new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(moverObjeto()));
-    timer->start(0.00001);
+    timer->start(100);
+
+    //se limpia el txt
+    limpiartxt();
 
     //mostrar escena
     ui->graphicsView->setScene(scene);
@@ -41,18 +47,15 @@ interfaz::~interfaz()
 void interfaz::zoom()
 {
     int valor_slider=ui->verticalSlider->value();
-    if(valor_slider==0)
+    if(valor_slider>value_ant)
     {
-        ui->graphicsView->scale(0.5,0.5);
-    }
-    else if(valor_slider==1)
-    {
-        ui->graphicsView->scale(1,1);
+        ui->graphicsView->scale(2,2);
     }
     else
     {
-        ui->graphicsView->scale(1.5,1.5);
+        ui->graphicsView->scale(0.5,0.5);
     }
+    value_ant=valor_slider;
 }
 
 void interfaz::moverObjeto()
@@ -63,14 +66,30 @@ void interfaz::moverObjeto()
     float posicion_x, posicion_y,contador=1,masa_s=cuerpos[0]->getMasa();
     for(it=cuerpos.begin()+1;it!=cuerpos.end();it++)
     {
+        if(ui->radioButton_fast->isChecked())
+        {
+            timer->stop();
+            timer->start(1);
+        }
+        else if(ui->radioButton_normal->isChecked())
+        {
+            timer->stop();
+            timer->start(100);
+        }
+        else if(ui->radioButton_slow->isChecked())
+        {
+            timer->stop();
+            timer->start(300);
+        }
         cuerpos[contador]->a_restart();
         cuerpos[contador]->acelera(masa_s);
         cuerpos[contador]->posicion_actu(1);
         posicion_x=cuerpos[contador]->getPX();
         posicion_y=cuerpos[contador]->getPY();
-        cuerpos[contador]->setPos(posicion_x,posicion_y);
+        cuerpos[contador]->setPos(posicion_x,posicion_y);  
         contador++;
     }
+    actualizartxt();
 }
 
 void interfaz::dibujarPlanetas(string ruta)
@@ -141,6 +160,54 @@ void interfaz::dibujarPlanetas(string ruta)
         scene->addItem(cuerpos.back());
         planeta_actu.erase();
     }
+}
+
+void interfaz::limpiartxt()
+{
+    ofstream ofs;
+    ofs.open("../practica6/textos/posiciones_result.txt", ofstream::out | ofstream::trunc);
+    ofs.close();
+}
+
+void interfaz::actualizartxt()
+{
+    ifstream archivo;
+    string texto, textofin;
+    archivo.open("../practica6/textos/posiciones_result.txt", ios::in);//archivo en modo lectura
+    if(archivo.fail())
+    {
+        cout<<"El archivo no se pudo abrir"<<endl;
+        exit(1);
+    }
+    while(!archivo.eof())//Mientras no llegue a en End Of File
+    {
+        getline(archivo,texto);
+        if (texto!="")
+            textofin+=texto+"\n";
+    }
+    archivo.close();
+
+    float posicion_x, posicion_y;
+    int contador=0;
+    string posix,posiy;
+    QList<planeta*>::iterator it;
+    for(it=cuerpos.begin();it!=cuerpos.end();it++)
+    {
+        posicion_x=cuerpos[contador]->getPX();
+        posicion_y=cuerpos[contador]->getPY();
+        posix=(std::to_string(posicion_x));
+        posiy=(std::to_string(posicion_y));
+        textofin+=posix;
+        textofin+="    ";
+        textofin+=posiy;
+        if(it!=cuerpos.end()-1)
+            textofin+="    ";
+        contador++;
+    }
+    ofstream escritura;
+    escritura.open("../practica6/textos/posiciones_result.txt");
+    escritura<<textofin;
+    escritura.close();
 }
 
 
