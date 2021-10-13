@@ -2,7 +2,9 @@
 #define PLANETA_H
 
 #include <QGraphicsItem>
+#include <iostream>
 #include <QPainter>
+#include <math.h>
 
 #define PATH_SOL "../practica6/imagenes/sol.png"
 #define PATH_MERC "../practica6/imagenes/mercurio.png"
@@ -14,18 +16,31 @@
 #define PATH_URAN "../practica6/imagenes/urano.png"
 #define PATH_NEPT "../practica6/imagenes/neptuno.png"
 
+#define PI 3.14159265
+
 using namespace std;
 
 class planeta : public QGraphicsItem
 {
-//    int h=20;
-//    int a=20;
-    int posx;
-    int posy;
-    int vx;
-    int vy;
-    int masa;
-    int radio;
+    float posx;
+    float posy;
+    float xo;
+    float yo;
+    float r;
+
+    float vx;
+    float vy;
+    float vxo;
+    float vyo;
+
+    float ax;
+    float ay;
+
+    float masa;
+    float radio;
+
+//    float G=0.0000000000667384;
+    float G=1;
 
     bool sol=false;
     bool merc=false;
@@ -39,9 +54,17 @@ class planeta : public QGraphicsItem
 
 public:
     planeta();
-    planeta(int x,int y,int vx,int vy,int masa,int radio,string nom_planet);
+    planeta(float x,float y,float vx,float vy,float masa,float radio,string nom_planet);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+
+    float getPX();
+    float getPY();
+    float getMasa();
+    void posicion_actu(float dt);
+    void a_restart();
+    void acelera(float masa_sol);
+
     ~planeta();
 };
 

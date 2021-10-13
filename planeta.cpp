@@ -5,21 +5,31 @@ planeta::planeta()
     tier=true;
     posx=0;
     posy=0;
+    xo=0;
+    yo=0;
     vx=0;
     vy=0;
+    vxo=0;
+    vyo=0;
     masa=0;
-    radio=20;
+    r=20;
     setPos(posx,posy);
 }
 
-planeta::planeta(int x, int y, int _vx, int _vy, int _masa, int _radio, string textura)
+planeta::planeta(float x, float y, float _vx, float _vy, float _masa, float _radio, string textura)
 {
     posx=x;
     posy=y;
+    xo=posx;
+    yo=posy;
     vx=_vx;
     vy=_vy;
+    vxo=vx;
+    vyo=vy;
+    ax=0;
+    ay=0;
     masa=_masa;
-    radio=_radio;
+    r=_radio;
     setPos(posx,posy);
     if(textura=="sol")
     {
@@ -65,7 +75,7 @@ planeta::planeta(int x, int y, int _vx, int _vy, int _masa, int _radio, string t
 
 QRectF planeta::boundingRect() const
 {
-    return QRectF(radio/2,radio/2,radio,radio);
+    return QRectF(-r/2,-r/2,r,r);
 }
 
 void planeta::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -108,6 +118,43 @@ void planeta::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
         pixmap.load(PATH_NEPT);
     }
     painter->drawPixmap(boundingRect(),pixmap,pixmap.rect());
+}
+
+float planeta::getPX()
+{
+    return posx;
+}
+
+float planeta::getPY()
+{
+    return posy;
+}
+
+float planeta::getMasa()
+{
+    return masa;
+}
+
+void planeta::posicion_actu(float dt)
+{
+    //sacar pox y posy, ademas modificar cualquier variable que sea necesaria
+    vx = vx + (ax*dt);
+    vy = vy + (ay*dt);
+    posx = posx + (vx*dt);
+    posy = posy + (vy*dt);
+}
+
+void planeta::a_restart()
+{
+    ax=0;
+    ay=0;
+}
+
+void planeta::acelera(float masa_sol)
+{
+    radio = sqrt(pow(0-posx,2)+pow(0-posy,2));
+    ax += G*masa_sol*(0-posx)/pow(radio,3);
+    ay += G*masa_sol*(0-posy)/pow(radio,3);
 }
 
 planeta::~planeta()
