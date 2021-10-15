@@ -23,7 +23,7 @@ interfaz::interfaz(QWidget *parent)
     dibujarPlanetas();
 
     //Cuadrar escalamiento de scene
-    ui->graphicsView->scale(0.095,0.095);
+    ui->graphicsView->scale(0.7,0.7);
 
     //timer
     timer=new QTimer(this);
